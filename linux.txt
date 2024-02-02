@@ -1,0 +1,100 @@
+#!/bin/bash
+
+# Function to generate Fibonacci sequence
+generate_fibonacci() {
+    echo -n "Enter the number of terms in the Fibonacci sequence: "
+    read n
+
+    a=0
+    b=1
+
+    echo -n "Fibonacci Sequence: "
+    for ((i = 0; i < n; i++)); do
+        echo -n "$a "
+        temp=$((a + b))
+        a=$b
+        b=$temp
+    done
+    echo
+}
+
+# Function to backup a directory
+backup_directory() {
+    echo -n "Enter the directory path to backup: "
+    read dir_path
+
+    echo "Creating a compressed backup of the directory..."
+    tar -czf backup.tar.gz "$dir_path"
+    echo "Backup completed successfully: backup.tar.gz"
+}
+
+# Function to find and replace in a file
+find_replace_in_file() {
+    echo -n "Enter the filename: "
+    read filename
+
+    echo -n "Enter the search string: "
+    read search_string
+
+    echo -n "Enter the replacement string: "
+    read replacement_string
+
+    sed -i "s/$search_string/$replacement_string/g" "$filename"
+    echo "Find and replace operation completed successfully."
+}
+
+# Function to print system information
+print_system_info() {
+    echo "Current Date and Time: $(date)"
+    echo "Operating System Information: $(uname -a)"
+}
+
+# Function to count a string in a file
+count_string_in_file() {
+    echo -n "Enter the filename: "
+    read filename
+
+    echo -n "Enter the string to count: "
+    read count_string
+
+    count=$(grep -o "$count_string" "$filename" | wc -l)
+    echo "Frequency of '$count_string' in '$filename': $count"
+}
+
+# Function to count files with a specific extension in a directory
+count_files_with_extension() {
+    echo -n "Enter the directory path: "
+    read dir_path
+
+    echo -n "Enter the file extension to count: "
+    read file_extension
+
+    count=$(find "$dir_path" -type f -name "*.$file_extension" | wc -l)
+    echo "Number of files with '$file_extension' extension in '$dir_path': $count"
+}
+
+# Interactive menu
+while true; do
+    echo -e "\nInteractive Menu:"
+    echo "1. Generate Fibonacci Sequence"
+    echo "2. Directory Backup"
+    echo "3. Find and Replace in a File"
+    echo "4. Print System Information"
+    echo "5. Count a String in a File"
+    echo "6. Count Files with a Specific Extension"
+    echo "7. Exit"
+
+    echo -n "Choose an option (1-7): "
+    read option
+
+    case $option in
+    1) generate_fibonacci ;;
+    2) backup_directory ;;
+    3) find_replace_in_file ;;
+    4) print_system_info ;;
+    5) count_string_in_file ;;
+    6) count_files_with_extension ;;
+    7) echo "Exiting. Goodbye!"; exit 0 ;;
+    *) echo "Invalid option. Please choose a number between 1 and 7." ;;
+    esac
+done
